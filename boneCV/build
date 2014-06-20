@@ -1,0 +1,17 @@
+#!/bin/bash
+
+echo "Video for Beaglebone Video Applications - derekmolloy.ie"
+
+echo "Building the OpenCV example for the Beaglebone"
+g++ -O2 boneCV.cpp -o boneCV `pkg-config --cflags --libs opencv` 
+
+echo "Building the OpenCV timing example for the Beaglebone"
+g++ -O2 boneCVtiming.cpp -o boneCVtiming `pkg-config --cflags --libs opencv` -lrt
+
+echo "Building the Video4Linux frame capture program"
+gcc -O2 grabber.c -o grabber -Wall `pkg-config --cflags --libs libv4l2`  
+
+echo "Building the Video4Linux capture example program"
+gcc -O2 capture.c -o capture -Wall `pkg-config --cflags --libs libv4l2`  
+
+echo "Finished"

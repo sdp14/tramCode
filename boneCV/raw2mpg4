@@ -1,0 +1,7 @@
+#!/bin/bash
+
+echo "Video for Beaglebone Video Applications - derekmolloy.ie"
+echo "Converting raw file to mpeg4 format"
+avconv -y -analyzeduration 10M -probesize 10M -i output.raw -vcodec copy /home/logger/upload/output.mp4
+exit $?
+echo "Finished"

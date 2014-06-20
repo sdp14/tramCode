@@ -1,0 +1,12 @@
+from subprocess import PIPE, Popen
+
+
+class accelerometer:
+       def __init__(self):
+	   self.Data = [0.0, 0.0, 0.0]
+           self.Stats = [0, 0, 0, 0, 0, 0]
+           self.Danger = [0, 0]
+	  # p = Popen(["./arduino-serial", "-b", "9600","-p","/dev/ttyACM0","-S"],stdout=PIPE,cwd='/home/m/arduino-serial/')
+         
+
+                  
