@@ -31,18 +31,18 @@ class StateMachine:
         thread2.start()
         thread3.start()
         while count == 1 :
-              serv.data = map(TramAction, serv.dataT)
-	      self.currentState.run(serv,serv2,accel,meas,bAndT)
+            serv.data = map(TramAction, serv.dataT)
+	        self.currentState.run(serv,serv2,accel,meas,bAndT)
 
-              if((bAndT.Batt[0] != 0.0 and bAndT.Batt[0] < 11.75) or (bAndT.Temp[0] != 0.0 and bAndT.Temp[0] > 40) or int(bAndT.stopBase[0]) == int(1.0) or int(bAndT.stopRadiom[0]) == int(1.0)) :
+            if((bAndT.Batt[0] != 0.0 and bAndT.Batt[0] < 11.75) or (bAndT.Temp[0] != 0.0 and bAndT.Temp[0] > 40) or int(bAndT.stopBase[0]) == int(1.0) or int(bAndT.stopRadiom[0]) == int(1.0)) :
                  serv.dataT[0] = (str("shutdown"))
                  serv.data = map(TramAction, serv.dataT)
                  
-              if str(serv.data[0]) == str('measure'):
+            if str(serv.data[0]) == str('measure'):
                  serv2.wait=1
 
 
-	      self.currentState = self.currentState.next(serv.data[0])
+	        self.currentState = self.currentState.next(serv.data[0])
 
 	      if(thread1.isAlive() == False) :
                  thread1 = threading.Thread(target=serv.listun,args=(0, accel,meas,bAndT))
@@ -55,4 +55,3 @@ class StateMachine:
               if(thread3.isAlive() == False) :
                  thread3 = threading.Thread(target=serv2.listun,args=(2,accel,meas,bAndT))
                  thread3.start()
-
