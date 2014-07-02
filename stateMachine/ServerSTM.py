@@ -105,11 +105,17 @@ class Measure(StateT):
                      print("trying to send done")
                      if(meas.Retry == 0):
                        print("trying to send done retry=0")
+                       print "CASE 1"
+                       print(connInfo[0].getpeername)
+                       print(connInfo[0].getsockname)
                        serv.connInfo[0].send('done')
                        serv.connInfo[0].send('0')
                        serv2.wait=0
                      if(meas.Retry > 0):
                        print("trying to send done retry!=0")
+                       print "CASE 2"
+                       print(connInfo[0].getpeername)
+                       print(connInfo[0].getsockname)
                        serv.connInfo[0].send('done')
                        serv.connInfo[0].send('1')
                        serv2.wait=0

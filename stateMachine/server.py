@@ -24,7 +24,10 @@ class server:
             self.wait = 0
  
 	def listun(self, typ, accel, meas, bAndT):
-             self.connInfo[0], self.connInfo[1] = self.s.accept()
+              # B self.s.accept() returns a new socket object self.connInfo[0] and
+              # the address bound on line 13 (self.s.bind((self.HOST, self.PORT)) to self.connInfo[1].
+              # Apperently, the new socket object given to self.connInfo[0] is null (none in python speak).
+              self.connInfo[0], self.connInfo[1] = self.s.accept()
 	     while True:
                   try:
                       self.dat = self.connInfo[0].recv(1024)
