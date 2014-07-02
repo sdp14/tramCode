@@ -33,7 +33,7 @@ class server:
                   except SocketError as e:
                           if(typ==0):
                             self.dat = "wait 0 0 0 0 0 10 180 20"
-                          print "ln 36"      
+                          print "typ==0 true: self.dat set to 'wait 0 0 0 0 0 10 180 20'"     
                   if len(self.dat) != 0 :
                      try:
                         if(typ==2):
