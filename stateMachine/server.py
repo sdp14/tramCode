@@ -28,7 +28,7 @@ class server:
               # the address bound on line 13 (self.s.bind((self.HOST, self.PORT)) to self.connInfo[1].
               # Apperently, the new socket object given to self.connInfo[0] is null (none in python speak).
               self.connInfo[0], self.connInfo[1] = self.s.accept()
-	     while True:
+	            while True:
                   try:
                       self.dat = self.connInfo[0].recv(1024)
 #                      if(typ == 2):
