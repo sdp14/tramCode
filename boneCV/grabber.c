@@ -120,7 +120,7 @@ int main(int argc, char **argv)
         type = V4L2_BUF_TYPE_VIDEO_CAPTURE;
 
         xioctl(fd, VIDIOC_STREAMON, &type);
-        for (i = 0; i < 10; i++) {
+        for (i = 0; i < 1; i++) {
                 do {
                         FD_ZERO(&fds);
                         FD_SET(fd, &fds);

@@ -29,7 +29,7 @@ class server:
                   try:
                       self.dat = self.connInfo[0].recv(1024)
 #                      if(typ == 2):
-                      print(self.dat)
+                      #print(self.dat)
                   except SocketError as e:
                           if(typ==0):
                             self.dat = "wait 0 0 0 0 0 10 180 20"
@@ -44,6 +44,7 @@ class server:
                                 self.connInfo[0].send('s')
                         else:
                             self.connInfo[0].send('Recieved the last command:'+str(self.dat))
+                            #print("send:"+str(self.dat))
                      except SocketError as e:
                             pass
 
@@ -80,5 +81,5 @@ class server:
                      if(str(self.dataT[0]) != str('r')):
                         bAndT.Temp[0] = float(self.dataT[0])+ (float(self.dataT[1])/100)
                         bAndT.Batt[0] = float(self.dataT[2])+(float(self.dataT[3])/100)
-                        bAndT.stopBase[0] = float(self.dataT[4])
-                        bAndT.stopRadiom[0] = float(self.dataT[5])
+                        #bAndT.stopBase[0] = float(self.dataT[4])
+                        #bAndT.stopRadiom[0] = float(self.dataT[5])

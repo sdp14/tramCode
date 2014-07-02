@@ -7,7 +7,9 @@
 #-------------------------------------------------------------------------------
 # StateMachine/TramControl.py
 # Autonomous and directed control of tram operation
+import pudb; pu.db
 import string, sys, time
+
 import subprocess 
 sys.path += [".\lib"]
 from ctypes import *
@@ -73,13 +75,13 @@ class Measure(StateT):
              meas.initAccel = 0
              print "accel2"
        
-        print(accel.Data)
-	print(accel.Stats)
-	print(accel.Sens)
+        #print(accel.Data)
+	#print(accel.Stats)
+	#print(accel.Sens)
         if accel.Data[0] > (accel.Stats[0] - (accel.Sens[0]*accel.Stats[3])) or accel.Data[0] < (accel.Stats[0] + (accel.Sens[0]*accel.Stats[3])) or accel.Data[1] > (accel.Stats[1] - (accel.Sens[0]*accel.Stats[4])) or accel.Data[1] < (accel.Stats[1] + (accel.Sens[0]*accel.Stats[4])) or accel.Data[2] > (accel.Stats[2] - (accel.Sens[0]*accel.Stats[5])) or accel.Data[2] < (accel.Stats[2] + (accel.Sens[0]*accel.Stats[5])) :
-           print "accel ok"
+           #print "accel ok"
            if meas.busy==0 and (meas.a == None or meas.a.poll() != None) and (meas.b == None or meas.b.poll() != None) and (meas.c == None or meas.c.poll() != None) :
-              print(serv.dataT)
+              #print(serv.dataT)
               if meas.streamVid==0:
                  meas.takeMeasurements(int(serv.dataT[1]),int(serv.dataT[2]),0,0,0)
                  meas.busy=1
@@ -96,22 +98,28 @@ class Measure(StateT):
                  meas.busy=2
 
            if meas.busy == 2 and (meas.a == None or meas.a.poll() != None) and (meas.b == None or meas.b.poll() != None) and (meas.c == None or meas.c.poll() != None) :
+              print("busy = 2: done with measurement?")
               meas.busy=0
               try:
                   if(int((accel.Danger[0] + (100*accel.Danger[1])))<int(meas.Toler)):
+                     print("trying to send done")
                      if(meas.Retry == 0):
+                       print("trying to send done retry=0")
                        serv.connInfo[0].send('done')
                        serv.connInfo[0].send('0')
                        serv2.wait=0
                      if(meas.Retry > 0):
+                       print("trying to send done retry!=0")
                        serv.connInfo[0].send('done')
                        serv.connInfo[0].send('1')
                        serv2.wait=0
                      meas.initAccel = 1
                      meas.Retry = 0
               except SocketError as e:
+                     print("socket error!!")
                      pass
               if(int((accel.Danger[0] + (100*accel.Danger[1])))<int(meas.Toler)):
+                 print("going into wait")
 	         serv.dataT[0]=(str("wait"))
                  serv.data = map(TramAction, serv.dataT)
                  accel.Danger[0] = 0
@@ -130,7 +138,8 @@ class Measure(StateT):
 	       serv.prevState[0] = (str("measure"))
 	       serv.dataT[0] = (str("emergency"))
                serv.data = map(TramAction, serv.dataT)
-        print "accel bad"
+	else:
+            print "accel bad"
 
     def next(self, input):
         # Supported transition initialization:
@@ -238,10 +247,15 @@ class Shutdown(StateT):
           serv2.wait=0
         
         shutdownReport = ""
-        if serv.connInfo[0] != None:
+        print bAndT.Batt[0]
+        print bAndT.Temp[0]
+        print bAndT.stopBase[0]
+        print bAndT.stopRadiom[0]
+        if 1 == 1:
+       # if serv.connInfo[0] != None:
            try:
               if(serv.distress == 1):  
-                 serv.connInfo[0].send('done')
+                # serv.connInfo[0].send('done')
                  serv.distress = 0
               if(int(bAndT.stopBase[0]) == 1 or int(bAndT.stopRadiom[0]) == 1):
                  shutdownReport += str(5)
@@ -265,7 +279,8 @@ class Shutdown(StateT):
                  shutdownReport += str(0)
               meas.initAccel = 1
              #  serv.distress = 0
-              serv.connInfo[0].send(shutdownReport)
+              print shutdownReport
+             # serv.connInfo[0].send(shutdownReport)
             #  time.sleep(0.1)
            except SocketError as e:
                  pass
@@ -293,6 +308,7 @@ if __name__ == '__main__':
 
     main()
     TramControl.wait = Wait()
+    
     TramControl.measure = Measure()
     TramControl.picture = Picture()
     TramControl.emergency= Emergency()
