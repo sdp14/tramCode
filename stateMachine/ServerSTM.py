@@ -44,7 +44,7 @@ class Wait(StateT):
 
         if accel.Data[0] < (accel.Stats[0] - (accel.Sens[0]*accel.Stats[3])) and accel.Data[0] > (accel.Stats[0] + (accel.Sens[0]*accel.Stats[3])) or accel.Data[1] < (accel.Stats[1] - (accel.Sens[0]*accel.Stats[4])) or accel.Data[1] > (accel.Stats[1] + (accel.Sens[0]*accel.Stats[4])) or accel.Data[2] < (accel.Stats[2] - (accel.Sens[0]*accel.Stats[5])) or accel.Data[2] > (accel.Stats[2] + (accel.Sens[0]*accel.Stats[5])) :
            serv.prevState[0] = (str("wait"))
-	   serv.dataT[0] = (str("emergency"))
+           serv.dataT[0] = (str("emergency"))
            serv.data = map(TramAction, serv.dataT)
 
     def next(self,input):
@@ -76,8 +76,8 @@ class Measure(StateT):
              print "accel2"
        
         #print(accel.Data)
-	#print(accel.Stats)
-	#print(accel.Sens)
+        #print(accel.Stats)
+        #print(accel.Sens)
         if accel.Data[0] > (accel.Stats[0] - (accel.Sens[0]*accel.Stats[3])) or accel.Data[0] < (accel.Stats[0] + (accel.Sens[0]*accel.Stats[3])) or accel.Data[1] > (accel.Stats[1] - (accel.Sens[0]*accel.Stats[4])) or accel.Data[1] < (accel.Stats[1] + (accel.Sens[0]*accel.Stats[4])) or accel.Data[2] > (accel.Stats[2] - (accel.Sens[0]*accel.Stats[5])) or accel.Data[2] < (accel.Stats[2] + (accel.Sens[0]*accel.Stats[5])) :
            #print "accel ok"
            if meas.busy==0 and (meas.a == None or meas.a.poll() != None) and (meas.b == None or meas.b.poll() != None) and (meas.c == None or meas.c.poll() != None) :
@@ -90,7 +90,7 @@ class Measure(StateT):
                     meas.takeMeasurements(int(serv.dataT[1]),0,0,0,0)
                     meas.busy=1
     
-	   if meas.streamVid==0 and (meas.a == None or meas.a.poll() != None) and (meas.b == None or meas.b.poll() != None) and (meas.c == None or meas.c.poll() != None) and meas.busy == 1 :
+        if meas.streamVid==0 and (meas.a == None or meas.a.poll() != None) and (meas.b == None or meas.b.poll() != None) and (meas.c == None or meas.c.poll() != None) and meas.busy == 1 :
               meas.takeMeasurements(0,0,int(serv.dataT[3]),0,0)
               meas.busy=2
            else :
@@ -106,16 +106,16 @@ class Measure(StateT):
                      if(meas.Retry == 0):
                        print("trying to send done retry=0")
                        print "CASE 1"
-                       print(connInfo[0].getpeername)
-                       print(connInfo[0].getsockname)
+                       print(serv.connInfo[0].getpeername)
+                       print(serv.connInfo[0].getsockname)
                        serv.connInfo[0].send('done')
                        serv.connInfo[0].send('0')
                        serv2.wait=0
                      if(meas.Retry > 0):
                        print("trying to send done retry!=0")
                        print "CASE 2"
-                       print(connInfo[0].getpeername)
-                       print(connInfo[0].getsockname)
+                       print(serv.connInfo[0].getpeername)
+                       print(serv.connInfo[0].getsockname)
                        serv.connInfo[0].send('done')
                        serv.connInfo[0].send('1')
                        serv2.wait=0
@@ -126,7 +126,7 @@ class Measure(StateT):
                      pass
               if(int((accel.Danger[0] + (100*accel.Danger[1])))<int(meas.Toler)):
                  print("going into wait")
-	         serv.dataT[0]=(str("wait"))
+            serv.dataT[0]=(str("wait"))
                  serv.data = map(TramAction, serv.dataT)
                  accel.Danger[0] = 0
                  accel.Danger[1] = 0
@@ -322,7 +322,4 @@ if __name__ == '__main__':
   
     
    
-    TramControl().runAll()   
-
-
-
+    TramControl().runAll()

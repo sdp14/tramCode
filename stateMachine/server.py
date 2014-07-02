@@ -7,12 +7,12 @@ from socket import error as SocketError
 class server:
         def __init__(self,hostName,portNum):
             self.HOST = hostName             # Symbolic name meaning the local host
-	    self.PORT = portNum              # Arbitrary non-privileged port
+            self.PORT = portNum              # Arbitrary non-privileged port
             self.s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             self.s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-	    self.s.bind((self.HOST, self.PORT))
-	    self.s.listen(5)
-	    self.dataT = []
+            self.s.bind((self.HOST, self.PORT))
+            self.s.listen(5)
+            self.dataT = []
             self.dataS = []
             self.dataT.append(str("wait"))
             self.dataT.append(str("wait"))
@@ -23,12 +23,12 @@ class server:
             self.prevState = [" "]
             self.wait = 0
  
-	def listun(self, typ, accel, meas, bAndT):
+  def listun(self, typ, accel, meas, bAndT):
               # B self.s.accept() returns a new socket object self.connInfo[0] and
               # the address bound on line 13 (self.s.bind((self.HOST, self.PORT)) to self.connInfo[1].
               # Apperently, the new socket object given to self.connInfo[0] is null (none in python speak).
               self.connInfo[0], self.connInfo[1] = self.s.accept()
-	            while True:
+         while True:
                   try:
                       self.dat = self.connInfo[0].recv(1024)
 #                      if(typ == 2):
@@ -60,23 +60,23 @@ class server:
                      self.dataS[0] = self.dat
                      self.dataS=self.dataS[0].split(" ")
                      if(self.dataS[0] == str("wait") or self.dataS[0] == str("measure") or self.dataS[0] == str("emergency") or self.dataS[0] == str("shutdown") or self.dataS[0] == str("videoStream")) :  
-    	                self.dataT = self.dataS[0:6]
+                        self.dataT = self.dataS[0:6]
                         meas.Toler = int(self.dataS[6])
                         accel.Sens[0] = float( ( float(self.dataS[7]) /100 ) )
                         accel.Toler[0] = int(self.dataS[8])
  
                   if typ == 1 and self.dat!='': 
- 	   	     self.dataT[0] = self.dat
-                     self.dataT = self.dataT[0].split(" ")
-   		     accel.Data[0] = float(self.dataT[0])
-	             accel.Data[1] = float(self.dataT[1])
-	             accel.Data[2] = float(self.dataT[2])
-                     accel.Stats[0] = float(self.dataT[3])
-	             accel.Stats[1] = float(self.dataT[4])
-	             accel.Stats[2] = float(self.dataT[5])
-	             accel.Stats[3] = float(self.dataT[6])
-		     accel.Stats[4] = float(self.dataT[7])
-		     accel.Stats[5] = float(self.dataT[8])
+                      self.dataT[0] = self.dat
+                      self.dataT = self.dataT[0].split(" ")
+                      accel.Data[0] = float(self.dataT[0])
+                      accel.Data[1] = float(self.dataT[1])
+                      accel.Data[2] = float(self.dataT[2])
+                      accel.Stats[0] = float(self.dataT[3])
+                      accel.Stats[1] = float(self.dataT[4])
+                      accel.Stats[2] = float(self.dataT[5])
+                      accel.Stats[3] = float(self.dataT[6])
+                      accel.Stats[4] = float(self.dataT[7])
+                      accel.Stats[5] = float(self.dataT[8])
                      
                   if typ == 2 and self.dat!='':
                      self.dataT[0] = self.dat
